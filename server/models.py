@@ -51,6 +51,12 @@ class Post(db.Model):
         if len(value) >= 250:
             raise ValueError('Summary must be less than 250 characters in length')
         return value 
+    
+    @validates('category')
+    def validate_category(self, key, category):
+        if category not in ["Fiction", "Non-Fiction"]:
+            raise ValueError("Category must be fiction or non-fiction")
+        return category 
 
 
     def __repr__(self):
