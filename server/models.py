@@ -58,6 +58,12 @@ class Post(db.Model):
             raise ValueError("Category must be fiction or non-fiction")
         return category 
 
+    @validates('title')
+    def validates_title( self, key, title):
+        if title not in ["Won't Believe", "Secret", "Top", "Guess"]:
+            raise ValueError("Make the title more click-baity!")
+        return title 
+
 
     def __repr__(self):
         return f'Post(id={self.id}, title={self.title} content={self.content}, summary={self.summary})'
