@@ -14,6 +14,19 @@ class Author(db.Model):
 
     def __repr__(self):
         return f'Author(id={self.id}, name={self.name})'
+    
+    @validates('name')
+    def validate_name(self, key, value):
+        if value == "":
+            raise ValueError("Name cannot be blank")
+        return value 
+    
+    @validates('phone_number')
+    def validate_phone_number(self, key, value):
+        if len(value) != 10:
+            raise ValueError("Please eneter a ten digit phone number")
+        return value 
+
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -26,6 +39,12 @@ class Post(db.Model):
     summary = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    @validates('content')
+    def validate_post_content_len(self, key, value):
+        if len(value) < 250:
+            raise ValueError("Posts must be at least 250 characters in length.")
+        return value 
 
 
     def __repr__(self):
